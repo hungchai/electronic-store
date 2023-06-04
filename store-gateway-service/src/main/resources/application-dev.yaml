@@ -1,0 +1,9 @@
+spring:
+  datasource:
+    url: jdbc:h2:tcp://localhost:1521/tommazon;MODE=MYSQL
+#
+#management:
+#  endpoints:
+#    web:
+#      exposure:
+#        include: '*'
