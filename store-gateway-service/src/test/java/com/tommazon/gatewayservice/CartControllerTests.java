@@ -133,7 +133,7 @@ public class CartControllerTests extends AbstractTestBase {
 
     @Test
     @Order(4)
-    void getCartItems() {
+    void getCartItemsAndReceipt() {
         String url = urlMapping.get("getCartItems");
         long clientId = 1L;
         ResponseEntity<CartReceiptResponse> response1 = restTemplate.getForEntity(url, CartReceiptResponse.class, Map.of("refId", refId, "clientId", clientId));
@@ -144,9 +144,11 @@ public class CartControllerTests extends AbstractTestBase {
         log.info("currency Cart of ClientId {}: {}",clientId, JSONArray.toJSONString(cr.getItems()));
         log.info("Total Price of ClientId {}: {}{}",clientId, cr.getTotalPrice(), cr.getCcy());
         url = urlMapping.get("getCartItemsNiceFormat");
-        ResponseEntity<Map[]> response1NiceFormat = restTemplate.getForEntity(url, Map[].class, Map.of("refId", refId, "clientId", clientId, "isNiceFormat", true));
+        ResponseEntity<Map> response1NiceFormat = restTemplate.getForEntity(url, Map.class, Map.of("refId", refId, "clientId", clientId, "isNiceFormat", true));
         assertEquals(HttpStatus.OK, response1NiceFormat.getStatusCode());
-        log.info(JSONArray.toJSONString(Arrays.asList(Objects.requireNonNull(response1NiceFormat.getBody()))));
+        Map resp = response1NiceFormat.getBody();
+        log.info(JSONArray.toJSONString(Arrays.asList(resp.get("items"))));
+        log.info("receipt \n {}", (String)resp.get("print"));
 
         clientId = 2L;
         url = urlMapping.get("getCartItems");
@@ -158,10 +160,11 @@ public class CartControllerTests extends AbstractTestBase {
         log.info("currency Cart of ClientId {}: {}",clientId, JSONArray.toJSONString(cr.getItems()));
         log.info("Total Price of ClientId {}: {}{}",clientId, cr.getTotalPrice(), cr.getCcy());
         url = urlMapping.get("getCartItemsNiceFormat");
-        ResponseEntity<Map[]> response2NiceFormat = restTemplate.getForEntity(url, Map[].class, Map.of("refId", refId, "clientId", clientId, "isNiceFormat", true));
+        ResponseEntity<Map> response2NiceFormat = restTemplate.getForEntity(url, Map.class, Map.of("refId", refId, "clientId", clientId, "isNiceFormat", true));
         assertEquals(HttpStatus.OK, response2NiceFormat.getStatusCode());
-        log.info(JSONArray.toJSONString(Arrays.asList(Objects.requireNonNull(response2NiceFormat.getBody()))));
-
+        Map resp2 = response2NiceFormat.getBody();
+        log.info(JSONArray.toJSONString(Arrays.asList(resp2.get("items"))));
+        log.info("receipt \n {}", (String) resp2.get("print"));
 
     }
 

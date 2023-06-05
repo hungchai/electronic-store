@@ -1,6 +1,9 @@
 package com.tommazon.gatewayservice.controller.customer;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.tommazon.gatewayservice.component.business.deal.DealCalculator;
+import com.tommazon.gatewayservice.util.ReceiptJSONTableConverter;
 import com.tommazon.gatewayservice.controller.AbstractRestController;
 import com.tommazon.gatewayservice.controller.requestDto.CartRequest;
 import com.tommazon.gatewayservice.controller.responseDto.CartCommitReceiptResponse;
@@ -75,7 +78,7 @@ public class CartController extends AbstractRestController {
 
     //get Receipt for open orders
     @GetMapping("/cart/{clientId}")
-    public ResponseEntity<Object> getCartItems(@PathVariable Long clientId, @RequestParam(required = false) String refId, @RequestParam(required = false) boolean isNiceFormat) {
+    public ResponseEntity<Object> getCartItems(@PathVariable Long clientId, @RequestParam(required = false) String refId, @RequestParam(required = false) boolean isNiceFormat) throws JsonProcessingException {
         var itemOpt = customerService.getCartItems(clientId);
         if (itemOpt.isPresent()) {
             BigDecimal totalPrice = dealCalculator.totalPrice(itemOpt.get());
@@ -88,7 +91,12 @@ public class CartController extends AbstractRestController {
             crb.ccy("USD");
 
             if (isNiceFormat) {
-                return ResponseEntity.status(HttpStatus.OK).body(generateReceipt(itemOpt.get(), totalPrice, ccy));
+                ObjectMapper mapper = new ObjectMapper();
+//                return ResponseEntity.status(HttpStatus.OK).body();
+                List receiptItem =generateReceipt(itemOpt.get(), totalPrice, ccy);
+                String jsonStr = mapper.writeValueAsString(receiptItem);
+                Map result = Map.of("items", receiptItem, "print", ReceiptJSONTableConverter.convertJSONToTable(jsonStr));
+                return ResponseEntity.status(HttpStatus.OK).body(result);
             } else {
                 return ResponseEntity.status(HttpStatus.OK).body(crb.build());
             }

@@ -33,6 +33,7 @@ dependencies {
     annotationProcessor "org.springframework.boot:spring-boot-configuration-processor"
 //    implementation 'io.micrometer:micrometer-registry-influx'
     implementation 'com.h2database:h2:1.4.200'
+    implementation group: 'com.google.code.gson', name: 'gson', version: '2.10.1'
 
     // flyway dependencies
     implementation 'org.flywaydb:flyway-core:7.15.0'
