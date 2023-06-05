@@ -22,10 +22,11 @@
 ## Api Specification
 
 ### Admin Api
-
+the prefix started with `/admin`
+[electronic_store_service-admin-openapi.yaml](electronic_store_service-admin-openapi.yaml)
 ### Customer Api
-
-
+the prefix started with `/customer`
+[electronic_store_service-customer-openapi.yaml](electronic_store_service-customer-openapi.yaml)
 
 #### Receipt Sample
 `[{"Deal":"0.0000","Name":"Apple","Remark":"","Quantity":"1","Price":"0.9900"},{"Deal":"0.0000","Name":"Apple","Remark":"","Quantity":"1","Price":"0.9900"},{"Deal":"0.0000","Name":"Banana","Remark":"","Quantity":"1","Price":"0.9900"},{"Deal":"0.3000","Name":"Banana","Remark":"30% off from the second item","Quantity":"1","Price":"0.9900"},{"Price":"3.6600 USD","Name":"Total Price"}]`

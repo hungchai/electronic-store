@@ -1,0 +1,280 @@
+openapi: "3.0.3"
+info:
+  title: "electronic_store_service customer API"
+  description: "electronic_store_service customer API"
+  version: "1.0.0"
+servers:
+  - url: "https://electronic_store_service"
+paths:
+  /api/customer/cart/add:
+    post:
+      summary: "POST api/customer/cart/add"
+      operationId: "addToCart"
+      parameters:
+        - name: "refId"
+          in: "query"
+          required: false
+          schema:
+            type: "string"
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/CartRequest"
+        required: true
+      responses:
+        "200":
+          description: "OK"
+          content:
+            '*/*':
+              schema:
+                $ref: "#/components/schemas/CartResponse"
+  /api/customer/cart/details/{clientId}/{itemId}:
+    get:
+      summary: "GET api/customer/cart/details/{clientId}/{itemId}"
+      operationId: "getItemsDetail"
+      parameters:
+        - name: "clientId"
+          in: "path"
+          required: true
+          schema:
+            type: "integer"
+            format: "int64"
+        - name: "itemId"
+          in: "path"
+          required: true
+          schema:
+            type: "integer"
+            format: "int64"
+        - name: "refId"
+          in: "query"
+          required: false
+          schema:
+            type: "string"
+      responses:
+        "200":
+          description: "OK"
+          content:
+            '*/*':
+              schema:
+                $ref: "#/components/schemas/CartResponse"
+  /api/customer/cart/{clientId}:
+    get:
+      summary: "GET api/customer/cart/{clientId}"
+      operationId: "getCartItems"
+      parameters:
+        - name: "clientId"
+          in: "path"
+          required: true
+          schema:
+            type: "integer"
+            format: "int64"
+        - name: "refId"
+          in: "query"
+          required: false
+          schema:
+            type: "string"
+        - name: "isNiceFormat"
+          in: "query"
+          required: false
+          schema:
+            type: "boolean"
+      responses:
+        "200":
+          description: "OK"
+          content:
+            '*/*':
+              schema:
+                $ref: "#/components/schemas/Object"
+  /api/customer/cart/{clientId}/commit:
+    post:
+      summary: "POST api/customer/cart/{clientId}/commit"
+      operationId: "commit"
+      parameters:
+        - name: "clientId"
+          in: "path"
+          required: true
+          schema:
+            type: "integer"
+            format: "int64"
+        - name: "refId"
+          in: "query"
+          required: false
+          schema:
+            type: "string"
+      responses:
+        "200":
+          description: "OK"
+          content:
+            '*/*':
+              schema:
+                $ref: "#/components/schemas/CartCommitReceiptResponse"
+  /api/customer/cart/{clientId}/{itemId}:
+    delete:
+      summary: "DELETE api/customer/cart/{clientId}/{itemId}"
+      operationId: "delete"
+      parameters:
+        - name: "clientId"
+          in: "path"
+          required: true
+          schema:
+            type: "integer"
+            format: "int64"
+        - name: "itemId"
+          in: "path"
+          required: true
+          schema:
+            type: "integer"
+            format: "int64"
+        - name: "refId"
+          in: "query"
+          required: false
+          schema:
+            type: "string"
+      responses:
+        "200":
+          description: "OK"
+          content:
+            '*/*':
+              schema:
+                $ref: "#/components/schemas/CartResponse"
+  /api/customer/product/all:
+    get:
+      summary: "GET api/customer/product/all"
+      operationId: "getAllActiveProducts"
+      parameters:
+        - name: "refId"
+          in: "query"
+          required: false
+          schema:
+            type: "string"
+      responses:
+        "200":
+          description: "OK"
+          content:
+            '*/*':
+              schema:
+                type: "array"
+                items:
+                  $ref: "#/components/schemas/ProductResponse"
+components:
+  schemas:
+    CartRequest:
+      type: "object"
+      properties:
+        productId:
+          type: "integer"
+          format: "int64"
+        clientId:
+          type: "integer"
+          format: "int64"
+    BigDecimal:
+      type: "object"
+      properties: { }
+    Product:
+      type: "object"
+      properties:
+        id:
+          type: "integer"
+          format: "int64"
+        uuid:
+          type: "string"
+        sku:
+          type: "string"
+        name:
+          type: "string"
+        price:
+          $ref: "#/components/schemas/BigDecimal"
+        ccy:
+          type: "string"
+        enabled:
+          type: "boolean"
+        dateCreated:
+          type: "string"
+          format: "date-time"
+        lastUpdated:
+          type: "string"
+          format: "date-time"
+    Cart:
+      type: "object"
+      properties:
+        id:
+          type: "integer"
+          format: "int64"
+        clientId:
+          type: "integer"
+          format: "int64"
+        transactionUuid:
+          type: "string"
+        product:
+          $ref: "#/components/schemas/Product"
+        quantity:
+          type: "integer"
+          format: "int32"
+        price:
+          $ref: "#/components/schemas/BigDecimal"
+        deal:
+          $ref: "#/components/schemas/BigDecimal"
+        ccy:
+          type: "string"
+        state:
+          type: "string"
+          enum:
+            - "OPEN"
+            - "CANCELLED"
+            - "COMMITTED"
+            - "SETTLED"
+        dateCreated:
+          type: "string"
+          format: "date-time"
+        lastUpdated:
+          type: "string"
+          format: "date-time"
+    CartResponse:
+      type: "object"
+      properties:
+        items:
+          type: "array"
+          items:
+            $ref: "#/components/schemas/Cart"
+        clientId:
+          type: "integer"
+          format: "int64"
+        refId:
+          type: "string"
+        remark:
+          type: "string"
+    Object:
+      type: "object"
+      properties: { }
+    CartCommitReceiptResponse:
+      type: "object"
+      properties:
+        transactionUuid:
+          type: "string"
+        totalPrice:
+          $ref: "#/components/schemas/BigDecimal"
+        ccy:
+          type: "string"
+        receipt:
+          type: "string"
+        items:
+          type: "array"
+          items:
+            $ref: "#/components/schemas/Cart"
+        clientId:
+          type: "integer"
+          format: "int64"
+        refId:
+          type: "string"
+        remark:
+          type: "string"
+    ProductResponse:
+      type: "object"
+      properties:
+        product:
+          $ref: "#/components/schemas/Product"
+        refId:
+          type: "string"
+        remark:
+          type: "string"
