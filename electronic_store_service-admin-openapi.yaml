@@ -1,0 +1,594 @@
+openapi: "3.0.3"
+info:
+  title: "electronic_store_service Admin API"
+  description: "electronic_store_service Admin API"
+  version: "1.0.0"
+servers:
+  - url: "https://electronic_store_service"
+paths:
+  /api/admin/product:
+    post:
+      summary: "POST api/admin/product"
+      operationId: "createProduct"
+      parameters:
+        - name: "refId"
+          in: "query"
+          required: false
+          schema:
+            type: "string"
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/Product"
+        required: true
+      responses:
+        "200":
+          description: "OK"
+          content:
+            '*/*':
+              schema:
+                $ref: "#/components/schemas/ProductResponse"
+  /api/admin/product/all:
+    get:
+      summary: "GET api/admin/product/all"
+      operationId: "getAllProducts"
+      parameters:
+        - name: "enabled"
+          in: "query"
+          required: false
+          schema:
+            type: "boolean"
+        - name: "refId"
+          in: "query"
+          required: false
+          schema:
+            type: "string"
+      responses:
+        "200":
+          description: "OK"
+          content:
+            '*/*':
+              schema:
+                type: "array"
+                items:
+                  $ref: "#/components/schemas/ProductResponse"
+  /api/admin/product/id/{productId}:
+    get:
+      summary: "GET api/admin/product/id/{productId}"
+      operationId: "getProductById"
+      parameters:
+        - name: "productId"
+          in: "path"
+          required: true
+          schema:
+            type: "integer"
+            format: "int64"
+        - name: "refId"
+          in: "query"
+          required: false
+          schema:
+            type: "string"
+      responses:
+        "200":
+          description: "OK"
+          content:
+            '*/*':
+              schema:
+                $ref: "#/components/schemas/ProductResponse"
+    put:
+      summary: "PUT api/admin/product/id/{productId}"
+      operationId: "updateProduct"
+      parameters:
+        - name: "productId"
+          in: "path"
+          required: true
+          schema:
+            type: "integer"
+            format: "int64"
+        - name: "refId"
+          in: "query"
+          required: false
+          schema:
+            type: "string"
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/Product"
+        required: true
+      responses:
+        "200":
+          description: "OK"
+          content:
+            '*/*':
+              schema:
+                $ref: "#/components/schemas/ProductResponse"
+    delete:
+      summary: "DELETE api/admin/product/id/{productId}"
+      operationId: "deleteProduct"
+      parameters:
+        - name: "productId"
+          in: "path"
+          required: true
+          schema:
+            type: "integer"
+            format: "int64"
+        - name: "refId"
+          in: "query"
+          required: false
+          schema:
+            type: "string"
+      responses:
+        "200":
+          description: "OK"
+          content:
+            '*/*':
+              schema:
+                $ref: "#/components/schemas/ProductResponse"
+  /api/admin/product/id/{productId}/{enabled}:
+    put:
+      summary: "PUT api/admin/product/id/{productId}/{enabled}"
+      operationId: "toggleById"
+      parameters:
+        - name: "productId"
+          in: "path"
+          required: true
+          schema:
+            type: "integer"
+            format: "int64"
+        - name: "enabled"
+          in: "path"
+          required: true
+          schema:
+            type: "boolean"
+        - name: "refId"
+          in: "query"
+          required: false
+          schema:
+            type: "string"
+      responses:
+        "200":
+          description: "OK"
+          content:
+            '*/*':
+              schema:
+                $ref: "#/components/schemas/ProductResponse"
+  /api/admin/product/sku/{skuId}:
+    delete:
+      summary: "DELETE api/admin/product/sku/{skuId}"
+      operationId: "deleteProduct"
+      parameters:
+        - name: "skuId"
+          in: "path"
+          required: true
+          schema:
+            type: "string"
+        - name: "refId"
+          in: "query"
+          required: true
+          schema:
+            type: "string"
+      responses:
+        "200":
+          description: "OK"
+          content:
+            '*/*':
+              schema:
+                $ref: "#/components/schemas/ProductResponse"
+  /api/admin/product/sku/{sku}:
+    get:
+      summary: "GET api/admin/product/sku/{sku}"
+      operationId: "getProductBySku"
+      parameters:
+        - name: "sku"
+          in: "path"
+          required: true
+          schema:
+            type: "string"
+        - name: "refId"
+          in: "query"
+          required: false
+          schema:
+            type: "string"
+      responses:
+        "200":
+          description: "OK"
+          content:
+            '*/*':
+              schema:
+                $ref: "#/components/schemas/ProductResponse"
+  /api/admin/product/sku/{sku}/{enabled}:
+    put:
+      summary: "PUT api/admin/product/sku/{sku}/{enabled}"
+      operationId: "toggleBySku"
+      parameters:
+        - name: "sku"
+          in: "path"
+          required: true
+          schema:
+            type: "string"
+        - name: "enabled"
+          in: "path"
+          required: true
+          schema:
+            type: "boolean"
+        - name: "refId"
+          in: "query"
+          required: false
+          schema:
+            type: "string"
+      responses:
+        "200":
+          description: "OK"
+          content:
+            '*/*':
+              schema:
+                $ref: "#/components/schemas/ProductResponse"
+  /api/admin/productdiscount:
+    post:
+      summary: "POST api/admin/productdiscount"
+      operationId: "create"
+      parameters:
+        - name: "refId"
+          in: "query"
+          required: false
+          schema:
+            type: "string"
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/ProductDiscountRequest"
+        required: true
+      responses:
+        "200":
+          description: "OK"
+          content:
+            '*/*':
+              schema:
+                $ref: "#/components/schemas/ProductDiscountResponse"
+  /api/admin/productdiscount/all:
+    get:
+      summary: "GET api/admin/productdiscount/all"
+      operationId: "getAll"
+      parameters:
+        - name: "enabled"
+          in: "query"
+          required: false
+          schema:
+            type: "boolean"
+        - name: "refId"
+          in: "query"
+          required: false
+          schema:
+            type: "string"
+      responses:
+        "200":
+          description: "OK"
+          content:
+            '*/*':
+              schema:
+                type: "array"
+                items:
+                  $ref: "#/components/schemas/ProductDiscountResponse"
+  /api/admin/productdiscount/id/{productDiscountId}:
+    get:
+      summary: "GET api/admin/productdiscount/id/{productDiscountId}"
+      operationId: "get"
+      parameters:
+        - name: "productDiscountId"
+          in: "path"
+          required: true
+          schema:
+            type: "integer"
+            format: "int64"
+        - name: "refId"
+          in: "query"
+          required: false
+          schema:
+            type: "string"
+      responses:
+        "200":
+          description: "OK"
+          content:
+            '*/*':
+              schema:
+                $ref: "#/components/schemas/ProductDiscountResponse"
+    put:
+      summary: "PUT api/admin/productdiscount/id/{productDiscountId}"
+      operationId: "update"
+      parameters:
+        - name: "productDiscountId"
+          in: "path"
+          required: true
+          schema:
+            type: "integer"
+            format: "int64"
+        - name: "refId"
+          in: "query"
+          required: false
+          schema:
+            type: "string"
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/ProductDiscountRequest"
+        required: true
+      responses:
+        "200":
+          description: "OK"
+          content:
+            '*/*':
+              schema:
+                $ref: "#/components/schemas/ProductDiscountResponse"
+  /api/admin/productdiscount/id/{productDiscountId}/{enabled}:
+    put:
+      summary: "PUT api/admin/productdiscount/id/{productDiscountId}/{enabled}"
+      operationId: "toggle"
+      parameters:
+        - name: "productDiscountId"
+          in: "path"
+          required: true
+          schema:
+            type: "integer"
+            format: "int64"
+        - name: "enabled"
+          in: "path"
+          required: true
+          schema:
+            type: "boolean"
+        - name: "refId"
+          in: "query"
+          required: false
+          schema:
+            type: "string"
+      responses:
+        "200":
+          description: "OK"
+          content:
+            '*/*':
+              schema:
+                $ref: "#/components/schemas/ProductDiscountResponse"
+  /api/admin/discount/config:
+    post:
+      summary: "POST api/admin/discount/config"
+      operationId: "create"
+      parameters:
+        - name: "refId"
+          in: "query"
+          required: true
+          schema:
+            type: "string"
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/ConfigDiscount"
+        required: true
+      responses:
+        "200":
+          description: "OK"
+          content:
+            '*/*':
+              schema:
+                $ref: "#/components/schemas/ConfigDiscountResponse"
+  /api/admin/discount/config/all:
+    get:
+      summary: "GET api/admin/discount/config/all"
+      operationId: "getAll"
+      parameters:
+        - name: "enabled"
+          in: "query"
+          required: false
+          schema:
+            type: "boolean"
+        - name: "refId"
+          in: "query"
+          required: false
+          schema:
+            type: "string"
+      responses:
+        "200":
+          description: "OK"
+          content:
+            '*/*':
+              schema:
+                type: "array"
+                items:
+                  $ref: "#/components/schemas/ConfigDiscountResponse"
+  /api/admin/discount/config/id/{configDiscountId}:
+    get:
+      summary: "GET api/admin/discount/config/id/{configDiscountId}"
+      operationId: "get"
+      parameters:
+        - name: "configDiscountId"
+          in: "path"
+          required: true
+          schema:
+            type: "integer"
+            format: "int64"
+        - name: "refId"
+          in: "query"
+          required: false
+          schema:
+            type: "string"
+      responses:
+        "200":
+          description: "OK"
+          content:
+            '*/*':
+              schema:
+                $ref: "#/components/schemas/ConfigDiscountResponse"
+    put:
+      summary: "PUT api/admin/discount/config/id/{configDiscountId}"
+      operationId: "update"
+      parameters:
+        - name: "configDiscountId"
+          in: "path"
+          required: true
+          schema:
+            type: "integer"
+            format: "int64"
+        - name: "refId"
+          in: "query"
+          required: true
+          schema:
+            type: "string"
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/ConfigDiscount"
+        required: true
+      responses:
+        "200":
+          description: "OK"
+          content:
+            '*/*':
+              schema:
+                $ref: "#/components/schemas/ConfigDiscountResponse"
+  /api/admin/discount/config/id/{configDiscountId}/{enabled}:
+    put:
+      summary: "PUT api/admin/discount/config/id/{configDiscountId}/{enabled}"
+      operationId: "toggle"
+      parameters:
+        - name: "configDiscountId"
+          in: "path"
+          required: true
+          schema:
+            type: "integer"
+            format: "int64"
+        - name: "enabled"
+          in: "path"
+          required: true
+          schema:
+            type: "boolean"
+        - name: "refId"
+          in: "query"
+          required: false
+          schema:
+            type: "string"
+      responses:
+        "200":
+          description: "OK"
+          content:
+            '*/*':
+              schema:
+                $ref: "#/components/schemas/ConfigDiscountResponse"
+components:
+  schemas:
+    BigDecimal:
+      type: "object"
+      properties: { }
+    Product:
+      type: "object"
+      properties:
+        id:
+          type: "integer"
+          format: "int64"
+        uuid:
+          type: "string"
+        sku:
+          type: "string"
+        name:
+          type: "string"
+        price:
+          $ref: "#/components/schemas/BigDecimal"
+        ccy:
+          type: "string"
+        enabled:
+          type: "boolean"
+        dateCreated:
+          type: "string"
+          format: "date-time"
+        lastUpdated:
+          type: "string"
+          format: "date-time"
+    ProductResponse:
+      type: "object"
+      properties:
+        product:
+          $ref: "#/components/schemas/Product"
+        refId:
+          type: "string"
+        remark:
+          type: "string"
+    ProductDiscountRequest:
+      type: "object"
+      properties:
+        productId:
+          type: "integer"
+          format: "int64"
+        configDiscountId:
+          type: "integer"
+          format: "int64"
+        description:
+          type: "string"
+        enabled:
+          type: "boolean"
+    ConfigDiscount:
+      type: "object"
+      properties:
+        discountPercentage:
+          type: "integer"
+          format: "int32"
+        minimumOrderQty:
+          type: "integer"
+          format: "int32"
+        id:
+          type: "integer"
+          format: "int64"
+        uuid:
+          type: "string"
+        description:
+          type: "string"
+        enabled:
+          type: "boolean"
+        dateCreated:
+          type: "string"
+          format: "date-time"
+        lastUpdated:
+          type: "string"
+          format: "date-time"
+    ProductDiscount:
+      type: "object"
+      properties:
+        id:
+          type: "integer"
+          format: "int64"
+        uuid:
+          type: "string"
+        product:
+          $ref: "#/components/schemas/Product"
+        configDiscount:
+          $ref: "#/components/schemas/ConfigDiscount"
+        description:
+          type: "string"
+        enabled:
+          type: "boolean"
+        dateCreated:
+          type: "string"
+          format: "date-time"
+        lastUpdated:
+          type: "string"
+          format: "date-time"
+    ProductDiscountResponse:
+      type: "object"
+      properties:
+        productDiscount:
+          $ref: "#/components/schemas/ProductDiscount"
+        refId:
+          type: "string"
+        remark:
+          type: "string"
+    ConfigDiscountResponse:
+      type: "object"
+      properties:
+        configDiscount:
+          $ref: "#/components/schemas/ConfigDiscount"
+        refId:
+          type: "string"
+        remark:
+          type: "string"
