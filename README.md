@@ -39,7 +39,6 @@ the prefix started with `/customer`
 | Banana |  | 1 | 0.9900 | 0.0000 | 
 | Banana | 30% off from the second item | 1 | 0.9900 | 0.3000 | 
 | Total Price |  |  | 3.6600 USD |  | 
-
-remark:
-https://github.com/hungchai/electronic-store/blob/80e9e21b4fe1d95f24b97080a8cab57bdd088b03/store-gateway-service/src/test/java/com/tommazon/gatewayservice/CartControllerTests.java#L136-L136
 ```
+remarks:
+[Code location and usage](https://github.com/hungchai/electronic-store/blob/80e9e21b4fe1d95f24b97080a8cab57bdd088b03/store-gateway-service/src/test/java/com/tommazon/gatewayservice/CartControllerTests.java#L136-L136)
